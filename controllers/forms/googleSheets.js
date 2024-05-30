@@ -1,15 +1,6 @@
 require("dotenv").config();
 const { google } = require("googleapis");
-const fs = require("fs");
-const path = require("path")
 
-// Load the service account key file
-const serviceAccountKeyFile = path.resolve(
-  process.env.GOOGLE_APPLICATION_CREDENTIALS
-);
-if (!fs.existsSync(serviceAccountKeyFile)) {
-  throw new Error("Service account key file not found");
-}
 
 // Google Sheets ID
 const SHEETS_ID = process.env.GOOGLE_SHEET_ID;
@@ -17,7 +8,10 @@ const SHEETS_ID = process.env.GOOGLE_SHEET_ID;
 // Authenticate with Google Sheets API
 const authenticateGoogleSheets = async () => {
   const auth = new google.auth.GoogleAuth({
-    keyFile: serviceAccountKeyFile,
+    credentials: {
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"), // Replace escaped newline characters
+    },
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
   const authClient = await auth.getClient();
