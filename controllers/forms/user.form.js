@@ -5,17 +5,17 @@ const { addDataToSheet } = require("../../controllers/forms/googleSheets");
 
 const fill_form = async (req, res) => {
   try {
-    const { name, email, phone_no, religion, site_visit_date } = req.body;
+    const { name, email, phone_no, time_to_connect, site_visit_date } =
+      req.body;
     try {
       await validate_user.validate_user.validate({
         name,
         email,
         phone_no,
-        religion,
+        time_to_connect,
         site_visit_date,
       });
     } catch (validationError) {
-
       const response = formatResponse(400, String(validationError.errors), []);
       return res.status(400).json(response);
     }
@@ -24,20 +24,23 @@ const fill_form = async (req, res) => {
       name,
       email,
       phone_no,
-      religion,
+      time_to_connect,
       site_visit_date
     );
-  
 
     const info = await sendMail(
       name,
       email,
       phone_no,
-      religion,
+      time_to_connect,
       site_visit_date
     );
     if (info.messageId && sheet_res.data.updates.updatedRows == 1) {
-      const response = formatResponse(200, "Email Sent & Data uploaded to Excel Successfully", []);
+      const response = formatResponse(
+        200,
+        "Email Sent & Data uploaded to Excel Successfully",
+        []
+      );
       return res.status(200).json(response);
     } else {
       const response = formatResponse(400, "Something Went Wrong", []);

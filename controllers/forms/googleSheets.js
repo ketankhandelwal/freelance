@@ -26,7 +26,7 @@ const writeToGoogleSheets = async (data) => {
     item.name,
     item.email,
     item.phone_no,
-    item.religion,
+    item.time_to_connect,
     item.site_visit_date,
   ]);
 
@@ -46,7 +46,7 @@ const addDataToSheet = async (
   name,
   email,
   phone_no,
-  religion,
+  time_to_connect,
   site_visit_date
 ) => {
   const data = [
@@ -54,7 +54,7 @@ const addDataToSheet = async (
       name: name,
       email: email,
       phone_no: phone_no,
-      religion: religion,
+      time_to_connect: time_to_connect,
       site_visit_date: site_visit_date,
     },
   ];
